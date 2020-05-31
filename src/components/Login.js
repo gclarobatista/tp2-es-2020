@@ -38,7 +38,7 @@ class Login extends Component {
         this.setState({ logginIn: true})
         Axios({
             method: 'post',
-            url: '/login',
+            url: 'https://cgytidzzce.execute-api.us-east-1.amazonaws.com/taxiApp/login',
             data: loginData
         }).then(res => {
             let tokenObj = JSON.stringify(res.data);

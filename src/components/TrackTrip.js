@@ -64,7 +64,7 @@ class TrackTrip extends Component {
                 
                  Axios({
                     method: 'post',
-                    url: '/starttrip',
+                    url: 'https://cgytidzzce.execute-api.us-east-1.amazonaws.com/taxiApp/starttrip',
                     headers: { 
                         'Authorization': this.state.jwt
                     },
@@ -73,7 +73,7 @@ class TrackTrip extends Component {
                     this.setState({tripFile: response.data.tripInfoFile})
                     Axios({
                         method: 'get',
-                        url: '/tripdetails',
+                        url: 'https://cgytidzzce.execute-api.us-east-1.amazonaws.com/taxiApp/tripdetails',
                         params: {
                             'fileName': this.state.tripFile
                         },
@@ -113,7 +113,7 @@ class TrackTrip extends Component {
     tick() {
         Axios({
             method: 'get',
-            url: '/tripdetails',
+            url: 'https://cgytidzzce.execute-api.us-east-1.amazonaws.com/taxiApp/tripdetails',
             params: {
                 'fileName': this.state.tripFile
             },

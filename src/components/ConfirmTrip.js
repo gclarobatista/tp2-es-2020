@@ -24,7 +24,7 @@ class ConfirmTrip extends Component {
     componentDidMount(){
         Axios({
             method: 'get',
-            url: '/taxidriver',
+            url: 'https://cgytidzzce.execute-api.us-east-1.amazonaws.com/taxiApp/taxidriver',
             headers: { 
                 'Authorization': this.state.jwt
             }   

@@ -34,7 +34,7 @@ class Loading extends Component {
     tick() {
         Axios({
             method: 'get',
-            url: '/transcription',
+            url: 'https://cgytidzzce.execute-api.us-east-1.amazonaws.com/taxiApp/transcription',
             params: {
                 'fileName': this.state.fileName
             },

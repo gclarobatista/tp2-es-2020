@@ -34,7 +34,7 @@ class Evaluation extends Component {
         console.log(this.state.destination)
         Axios({
             method: 'post',
-            url: '/evaluation',
+            url: 'https://cgytidzzce.execute-api.us-east-1.amazonaws.com/taxiApp/evaluation',
             headers: {
                 Authorization: this.state.jwt
             },

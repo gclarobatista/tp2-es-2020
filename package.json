@@ -3,7 +3,6 @@
   "name": "tp_es2",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://cgytidzzce.execute-api.us-east-1.amazonaws.com/taxiApp",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
