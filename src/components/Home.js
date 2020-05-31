@@ -5,6 +5,7 @@ import axios from 'axios';
 import { getJwt } from '../utils/Jwt';
 import { withRouter } from 'react-router-dom';
 import ReactLoading from "react-loading";
+import Axios from 'axios';
 
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
@@ -88,10 +89,13 @@ class Home extends Component {
         let jwt = getJwt();
         this.setState({isLoading: true});    
         
-        axios.post('/audiofile', base64data, {
+        Axios({
+            method: 'post',
+            url: 'https://cgytidzzce.execute-api.us-east-1.amazonaws.com/taxiApp/audiofile',
             headers: { 
                 'Authorization': jwt
-            }        
+            },
+            data: base64data
         }).then((response) => {
             let responseString = JSON.stringify(response.data);
             let fileName = JSON.parse(responseString).transcriptionRequest + ".json";
