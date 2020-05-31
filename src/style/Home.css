@@ -1,0 +1,41 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    height: 600px;
+    width: 880px;
+    background: #f2f2f2;
+    border-radius: 75px;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+#microButton {
+    background-color: red;
+    border-radius: 100%;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0px;
+    border: 0.5px solid #333333;
+}
+
+#microButton:hover{
+    background-color: #cc0101;
+    cursor: pointer;
+}
+
+.fa {
+    font-size: 60px;
+}
+
+.css-79elbk {
+    position: absolute!important;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;    
+}

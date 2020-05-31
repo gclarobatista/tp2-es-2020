@@ -1,0 +1,134 @@
+.travel-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    height: 600px;
+    width: 880px;
+    background: #f2f2f2;
+    border-radius: 75px;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+
+.buttons-container{
+    display: flex;
+        
+}
+
+.button{
+    height: 40px;
+    border-radius: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0px;
+    border: 0.5px solid #333333;
+    padding: 0px 30px;
+    cursor: pointer;
+}
+
+.Trip-Detais-Container{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 90%;
+    align-items: center;
+    padding-top: 1rem;
+}
+
+.Trip-Points-Container {
+    display: flex;
+    width: 100%;
+    height: 85%;
+    margin-top: 1rem;
+}
+
+.Trip-Points-Container p {
+    margin: 0;
+    padding: 5px;
+}
+
+
+.Taxi-Trip-Points-Container{
+    height: 100%;
+    width: 45%;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.Client-Trip-Points-Container{
+    height: 100%;
+    width: 45%;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.Direction-Points-Container{
+    background-color: #f2f2f2;
+    height: 100%;
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Checked-Points-Container{
+    height: 100%;
+    width: 45%;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.Client-Trip-Points-List{
+    padding-left: 0px;
+}
+
+.Taxi-Trip-Points-List{
+    padding-left: 0px;
+}
+
+.Checked-Trip-Points-List{
+    padding-left: 0px;
+}
+
+.Trip-Point-Container {
+    display: flex;
+    width: 100%;
+    padding-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 3px;
+}
+
+.Destiny-Trip-Container{
+    display: flex;
+    width: 100%;
+    height: 75%;
+    margin-top: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-Evaluation {
+    height: 8%;
+    font-size: 24px;
+    text-align: center;
+    vertical-align: middle;
+    color: #fff;
+    background-color: #a0a0a0;
+    border: none;
+    border-radius: 15px;
+    margin: 0px;
+    padding: 0px 10px;
+    cursor: pointer;
+}
+  
+  .button-Evaluation:hover {background-color: #808080}
+  
+
