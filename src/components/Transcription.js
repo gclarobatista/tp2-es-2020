@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import "../style/Transcription.css";
 import { getJwt } from "../utils/Jwt";
 import { withRouter } from "react-router-dom";
+
+import "../style/Transcription.css";
 
 class Transcription extends Component {
 
@@ -9,7 +10,7 @@ class Transcription extends Component {
         super(props)
         this.state = {
             location: "",
-            jwt: getJwt(),
+            JWT: getJwt(),
         }
         this.buttonClickHandler = this.buttonClickHandler.bind(this);
         this.iconClickHandler = this.iconClickHandler.bind(this);
@@ -41,6 +42,8 @@ class Transcription extends Component {
                 {this.state.location !== "" ?
                 <>
                     <h3>Foi isto que pronunciou ?</h3>
+                    <p>Caso não, pode editar o texto em baixo ou volte atrás para tentar de novo com o microfone</p>
+
                 </>
                 :
                 <>

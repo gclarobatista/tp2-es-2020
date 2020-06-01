@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { getJwt } from "../utils/Jwt";
 import Axios from "axios";
 import { withRouter } from "react-router-dom";
+import { API_PATH } from "../utils/ApiUtils"
 
 import "../style/ConfirmTrip.css";
-
 
 class ConfirmTrip extends Component {
 
@@ -16,12 +16,23 @@ class ConfirmTrip extends Component {
             driver: {},
             isFetching: true
         }
-
         this.confirmHandleOnClick = this.confirmHandleOnClick.bind(this)
         this.declineHandleOnClick = this.declineHandleOnClick.bind(this)
     }
 
-    componentDidMount(){
+    componentDidMount() {
+
+
+        // let options = {
+        //     method: 'POST',
+        //     headers: { 
+        //         'Authorization': this.state.jwt
+        //     }   
+        // }
+
+        // const url = API_PATH +  '/taxidriver';
+
+
         Axios({
             method: 'get',
             url: 'https://cgytidzzce.execute-api.us-east-1.amazonaws.com/taxiApp/taxidriver',

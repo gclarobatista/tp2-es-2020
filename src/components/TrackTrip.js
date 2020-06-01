@@ -63,7 +63,7 @@ class TrackTrip extends Component {
                 this.setState({travelPoints: auxTravelPoints})
                 
                  Axios({
-                    method: 'post',
+                    method: 'POST',
                     url: 'https://cgytidzzce.execute-api.us-east-1.amazonaws.com/taxiApp/starttrip',
                     headers: { 
                         'Authorization': this.state.jwt

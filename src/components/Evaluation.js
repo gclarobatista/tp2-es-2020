@@ -11,7 +11,7 @@ class Evaluation extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            jwt: getJwt(),
+            JWT: getJwt(),
             isFetching: false,
             destination: this.props.location.state.destination,
             driver: this.props.location.state.driver,
@@ -33,10 +33,10 @@ class Evaluation extends Component {
     handleOnClick() {
         console.log(this.state.destination)
         Axios({
-            method: 'post',
+            method: 'POST',
             url: 'https://cgytidzzce.execute-api.us-east-1.amazonaws.com/taxiApp/evaluation',
             headers: {
-                Authorization: this.state.jwt
+                Authorization: this.state.JWT
             },
             data: {
                 rating: this.state.rating,

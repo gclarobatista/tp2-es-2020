@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import ReactLoading from "react-loading";
-// import "bootstrap/dist/css/bootstrap.css";
-import "../style/Loading.css"
 import Axios from "axios";
 import { getJwt } from "../utils/Jwt";
+import { API_PATH } from "../utils/ApiUtils";
+import { withRouter } from "react-router-dom";
+
+import "../style/Loading.css"
 
 class Loading extends Component {
 
@@ -11,7 +13,7 @@ class Loading extends Component {
         super(props)
         this.state = {
             fileName: this.props.location.state.fileName,
-            jwt: getJwt()
+            JWT: getJwt()
         }
         this.componentCleanup = this.componentCleanup.bind(this);
         this.tick = this.tick.bind(this)
@@ -32,26 +34,25 @@ class Loading extends Component {
     }  
 
     tick() {
-        Axios({
-            method: 'get',
-            url: 'https://cgytidzzce.execute-api.us-east-1.amazonaws.com/taxiApp/transcription',
-            params: {
-                'fileName': this.state.fileName
-            },
-            headers: {
-                Authorization: this.state.jwt
-            }
-        }).then( response => {
-            console.log(response);
-            this.componentCleanup();
-            let transcriptionObj = JSON.stringify(response.data);
-            let transcriptedLocation = JSON.parse(transcriptionObj).transcription;
+        const apiTranscriptionUrl = API_PATH + '/transcription';
+        let options = {
+            method: 'GET',
+            params: { 'fileName': this.state.fileName },
+            headers: { Authorization: this.state.JWT }
+        }
+
+        Axios(apiTranscriptionUrl, options)
+        .then((response) => {
+            // this.componentCleanup();
+            let responseData = response.data;
+            let transcriptedLocation = responseData.transcription;
 
             this.props.history.push({
                 pathname: "/transcription",
                 state: { 'location': transcriptedLocation }
             })
-        }).catch( error => {
+        })
+        .catch((error) => {
             let httpResponseStatusCode = error.response.status;
             if (httpResponseStatusCode === 403) {
                 alert("[ERRO] Token de Sessão é inválido ou expirou. Redirecionando para a página de Login")
@@ -74,4 +75,4 @@ class Loading extends Component {
     }
 }
 
-export default Loading;
+export default withRouter(Loading);
