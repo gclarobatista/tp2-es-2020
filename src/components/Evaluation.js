@@ -4,6 +4,7 @@ import { getJwt } from "../utils/Jwt";
 import { withRouter } from "react-router-dom";
 import Axios from "axios";
 import { TouchableHighlightBase } from "react-native";
+import { API_PATH } from "../utils/ApiUtils";
 
 
 class Evaluation extends Component {
@@ -32,9 +33,10 @@ class Evaluation extends Component {
 
     handleOnClick() {
         console.log(this.state.destination)
-        Axios({
+
+        const url =API_PATH + '/evaluation';
+        let options = {
             method: 'POST',
-            url: 'https://cgytidzzce.execute-api.us-east-1.amazonaws.com/taxiApp/evaluation',
             headers: {
                 Authorization: this.state.JWT
             },
@@ -43,7 +45,11 @@ class Evaluation extends Component {
                 destination: this.state.destination,
                 driver: this.state.driver
             }
-        }).then( response => {
+        }
+
+
+        Axios(url, options)
+        .then(() => {
             this.setState({requestSuccess: true})
 
         }).catch( error => {

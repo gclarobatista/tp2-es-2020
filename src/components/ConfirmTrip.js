@@ -23,23 +23,17 @@ class ConfirmTrip extends Component {
     componentDidMount() {
 
 
-        // let options = {
-        //     method: 'POST',
-        //     headers: { 
-        //         'Authorization': this.state.jwt
-        //     }   
-        // }
-
-        // const url = API_PATH +  '/taxidriver';
-
-
-        Axios({
-            method: 'get',
-            url: 'https://cgytidzzce.execute-api.us-east-1.amazonaws.com/taxiApp/taxidriver',
+        let options = {
+            method: 'POST',
             headers: { 
                 'Authorization': this.state.jwt
             }   
-        }).then((response) => {
+        }
+        const url = API_PATH +  '/taxidriver';
+
+
+        Axios(url, options)
+        .then((response) => {
             this.setState({driver: response.data})
             this.setState({isFetching: false})
         }).catch((error) => {
