@@ -11,7 +11,7 @@ class ConfirmTrip extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            jwt: getJwt(),
+            JWT: getJwt(),
             travel: this.props.location.state.travel,
             driver: {},
             isFetching: true
@@ -22,14 +22,13 @@ class ConfirmTrip extends Component {
 
     componentDidMount() {
 
-
+        const url = API_PATH +  '/taxidriver';
         let options = {
-            method: 'POST',
+            method: 'GET',
             headers: { 
-                'Authorization': this.state.jwt
+                'Authorization': this.state.JWT
             }   
         }
-        const url = API_PATH +  '/taxidriver';
 
 
         Axios(url, options)
