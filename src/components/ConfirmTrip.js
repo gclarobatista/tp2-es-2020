@@ -21,7 +21,6 @@ class ConfirmTrip extends Component {
     }
 
     componentDidMount() {
-
         const url = API_PATH +  '/taxidriver';
         let options = {
             method: 'GET',
@@ -30,12 +29,12 @@ class ConfirmTrip extends Component {
             }   
         }
 
-
         Axios(url, options)
         .then((response) => {
             this.setState({driver: response.data})
             this.setState({isFetching: false})
-        }).catch((error) => {
+        })
+        .catch((error) => {
             let httpResponseStatusCode = error.response.status; 
             if(httpResponseStatusCode === 403) {
                 alert("Token de Sessão é inválido ou expirou. Redirecionando para a página de Login")

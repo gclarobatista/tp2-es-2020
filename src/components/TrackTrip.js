@@ -23,9 +23,6 @@ class TrackTrip extends Component {
             currentTravelPoints:{}
         }
         this.componentCleanup = this.componentCleanup.bind(this);
-        this.getRoutesBetweenTaxiAndClient = this.getRoutesBetweenTaxiAndClient.bind(this)
-        this.getRoutesBetweenSourceAddressToDestination = this.getRoutesBetweenSourceAddressToDestination.bind(this)
-        this.startTrip = this.startTrip.bind(this)
         this.tick = this.tick.bind(this)
         this.handleOnClick = this.handleOnClick.bind(this)
     }
@@ -34,104 +31,102 @@ class TrackTrip extends Component {
         clearInterval(this.interval)
     }
 
-    async componentDidMount(){
+    componentDidMount(){
         window.addEventListener('beforeunload', this.componentCleanup);
-
-        await getRoutesBetweenTaxiAndClient();
-        await getRoutesBetweenSourceAddressToDestination();
-        await startTrip();
         
+
+
+
+
+        const routesBetweenTaxiAndClientHereApi = 'https://router.hereapi.com/v8/routes?transportMode=car&origin=' + this.state.travel.driverInitialLatitude +  ',' + this.state.travel.driverInitialLongitude + '&destination=' + this.state.travel.sourceLatitude + ',' + this.state.travel.sourceLongitude + '&apikey=PKjmwpad10e91Bh2JUD7GcjLdM-j9B4PhW3eWUnr8sA&return=polyline&spans=names'
+        let options = {
+            method: 'GET'
+        }
+
+        Axios(routesBetweenTaxiAndClientHereApi, options)
+        .then((response) => {
+            for(let i = 0; i < response.data.routes[0].sections[0].spans.length; i++){
+                if(response.data.routes[0].sections[0].spans[i].names !== undefined){
+                    taxiTrip.push(response.data.routes[0].sections[0].spans[i].names[0].value)
+                }
+            }
+
+            Axios({
+                method: 'get',
+                url: 'https://router.hereapi.com/v8/routes?transportMode=car&origin=' + this.state.travel.sourceLatitude +  ',' + this.state.travel.sourceLongitude + '&destination=' + this.state.travel.destinationLatitude + ',' + this.state.travel.destinationLongitude + '&apikey=PKjmwpad10e91Bh2JUD7GcjLdM-j9B4PhW3eWUnr8sA&return=polyline&spans=names'
+            }).then((response) => {               
+                for(let i = 0; i < response.data.routes[0].sections[0].spans.length; i++){
+                    if(response.data.routes[0].sections[0].spans[i].names !== undefined){
+                        clientTrip.push(response.data.routes[0].sections[0].spans[i].names[0].value)
+                    }
+                }
+
+                let auxTravelPoints = {
+                    taxiTripPoints: taxiTrip,
+                    clientTripPoints: clientTrip,
+                    checkedTaxiTripPoints: [],
+                    checkedClientTripPoints: []
+                }
+
+                this.setState({travelPoints: auxTravelPoints})
+                
+                 Axios({
+                    method: 'POST',
+                    url: 'https://cgytidzzce.execute-api.us-east-1.amazonaws.com/taxiApp/starttrip',
+                    headers: { 
+                        'Authorization': this.state.jwt
+                    },
+                    data: this.state.travelPoints 
+                }).then((response) => {
+                    this.setState({tripFile: response.data.tripInfoFile})
+                    Axios({
+                        method: 'get',
+                        url: 'https://cgytidzzce.execute-api.us-east-1.amazonaws.com/taxiApp/tripdetails',
+                        params: {
+                            'fileName': this.state.tripFile
+                        },
+                        headers: {
+                            Authorization: this.state.jwt
+                        }
+                    }).then( response => {
+                        this.setState({currentTravelPoints: response.data})
+                        this.setState({isFetching: false})
+                        this.interval = setInterval(() => this.tick(), 1500);
+                    }).catch( error => {
+                        let httpResponseStatusCode = error.response.status;
+                        if (httpResponseStatusCode === 403) {
+                            alert("[ERRO] Token de Sessão é inválido ou expirou. Redirecionando para a página de Login")
+                            this.props.history.push('/')
+                        }
+                        else if(httpResponseStatusCode === 400) {
+                            alert("[ERRO] Ficheiro com a rota não existe. Tente novamente")
+                            this.props.history.push('/home')
+                        }
+                        else if(httpResponseStatusCode === 404) {
+                            alert("[ERRO] Ficheiro com a rota não existe. Tente novamente")
+                            this.props.history.push('/home')
+                        }
+                    })
+                })
+                    
+            })
+        })
     }
 
     componentWillUnmount() {
         this.componentCleanup();
         window.removeEventListener('beforeunload', this.componentCleanup);
     } 
-
-    async getRoutesBetweenTaxiAndClient() {
-        const routesBetweenTaxiAndClientHereAPI = 'https://router.hereapi.com/v8/routes?transportMode=car&origin=' + this.state.travel.driverInitialLatitude +  ',' + this.state.travel.driverInitialLongitude + '&destination=' + this.state.travel.sourceLatitude + ',' + this.state.travel.sourceLongitude + '&apikey=PKjmwpad10e91Bh2JUD7GcjLdM-j9B4PhW3eWUnr8sA&return=polyline&spans=names'
-        let options = {
-            method: 'GET'
-        }
-
-        let response = await Axios(routesBetweenTaxiAndClientHereAPI, options)
-        let responseData = response.data;
-
-        for(let i = 0; i < responseData.routes[0].sections[0].spans.length; i++){
-            if(responseData.routes[0].sections[0].spans[i].names !== undefined){
-                taxiTrip.push(responseData.routes[0].sections[0].spans[i].names[0].value)
-            }
-        }
-    }
-
-    async getRoutesBetweenSourceAddressToDestination() {
-        const routesBetweenSourceAddressToDestinationHereAPI = 'https://router.hereapi.com/v8/routes?transportMode=car&origin=' + this.state.travel.sourceLatitude +  ',' + this.state.travel.sourceLongitude + '&destination=' + this.state.travel.destinationLatitude + ',' + this.state.travel.destinationLongitude + '&apikey=PKjmwpad10e91Bh2JUD7GcjLdM-j9B4PhW3eWUnr8sA&return=polyline&spans=names'
-        let options = {
-            method: 'GET'
-        }
-
-        let response = await Axios(routesBetweenSourceAddressToDestinationHereAPI, options)
-        let responseData = response.data;
-
-        for(let i = 0; i < responseData.routes[0].sections[0].spans.length; i++){
-            if(responseData.routes[0].sections[0].spans[i].names !== undefined){
-                clientTrip.push(responseData.routes[0].sections[0].spans[i].names[0].value)
-            }
-        }
-
-        let auxTravelPoints = {
-            taxiTripPoints: taxiTrip,
-            clientTripPoints: clientTrip,
-            checkedTaxiTripPoints: [],
-            checkedClientTripPoints: []
-        }
-
-        this.setState({travelPoints: auxTravelPoints})
-    }
-
-    async startTrip() {
-        const startTripUrl = API_PATH + '/starttrip';
-        let options = {
-            method: 'POST',
-            headers: { 
-                'Authorization': this.state.jwt
-            },
-            data: this.state.travelPoints 
-        }
-
-        try {
-            let response = await Axios(startTripUrl, options)
-            let responseData = response.data;
-            this.setState({currentTravelPoints: responseData})
-            this.setState({isFetching: false})
-            this.interval = setInterval(() => this.tick(), 1500);
-        }
-        catch(error) {
-            let httpResponseStatusCode = error.response.status;
-            if (httpResponseStatusCode === 403) {
-                alert("[ERRO] Token de Sessão é inválido ou expirou. Redirecionando para a página de Login")
-                this.props.history.push('/')
-            }
-            else if(httpResponseStatusCode === 400) {
-                alert("[ERRO] Ficheiro com a rota não existe. Tente novamente")
-                this.props.history.push('/home')
-            }
-            else if(httpResponseStatusCode === 404) {
-                alert("[ERRO] Ficheiro com a rota não existe. Tente novamente")
-                this.props.history.push('/home')
-            }
-        }        
-    }
-
+    
     tick() {
         const url = API_PATH + '/tripdetails';
         let options = {
             method: 'GET',
-            headers: {
-                Authorization: this.state.jwt
-            },
             params: {
                 'fileName': this.state.tripFile
+            },
+            headers: {
+                Authorization: this.state.jwt
             }
         }
 
